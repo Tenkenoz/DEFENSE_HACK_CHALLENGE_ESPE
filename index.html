@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Defense Hack Challenge ESPE</title>
+<meta name="description" content="48 horas de ciberdefensa real. Hackathon multidisciplinario en la ESPE. 10, 11 y 12 de julio de 2026."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+/* ===================================================
+   RESET & ROOT
+=================================================== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+
+:root {
+  --navy:       #071525;
+  --navy-2:     #0b1f38;
+  --navy-3:     #102847;
+  --cyan:       #00d4ff;
+  --cyan-dim:   rgba(0,212,255,.12);
+  --cyan-glow:  0 0 20px rgba(0,212,255,.4);
+  --green:      #00ff9d;
+  --green-glow: 0 0 20px rgba(0,255,157,.4);
+  --text-main:  #e2e8f0;
+  --text-muted: #94a3b8;
+  --grid-line:  rgba(255,255,255,.03);
+}
+
+body {
+  background-color: var(--navy);
+  color: var(--text-main);
+  font-family: 'Outfit', sans-serif;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4 { font-family: 'Bebas Neue', sans-serif; letter-spacing: 1px; line-height: 1.1; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+
+/* ===================================================
+   BACKGROUND & GRID
+=================================================== */
+.bg-grid {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background-image: 
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 40px 40px; z-index: -2; pointer-events: none;
+}
+.bg-glow {
+  position: fixed; top: -20%; left: -10%; width: 50vw; height: 50vw;
+  background: radial-gradient(circle, var(--cyan-dim) 0%, transparent 70%);
+  z-index: -1; pointer-events: none; filter: blur(60px);
+}
+.bg-glow.right {
+  top: auto; bottom: -20%; left: auto; right: -10%;
+  background: radial-gradient(circle, rgba(0,255,157,.08) 0%, transparent 70%);
+}
+
+/* ===================================================
+   PLACEHOLDERS DE IMÁGENES (PARA REEMPLAZAR)
+=================================================== */
+.img-placeholder {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed var(--cyan);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted); font-family: 'JetBrains Mono', monospace;
+  text-align: center; font-size: 0.8rem; padding: 10px; border-radius: 8px;
+  transition: all 0.3s ease;
+}
+.img-placeholder:hover { background: rgba(255,255,255,0.08); border-color: white; color: white; }
+
+/* ===================================================
+   NAVBAR & LOGOS
+=================================================== */
+nav {
+  position: fixed; top: 0; width: 100%; z-index: 100;
+  padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center;
+  transition: all 0.3s ease; border-bottom: 1px solid transparent;
+}
+nav.scrolled {
+  background: rgba(7, 21, 37, 0.95);
+  backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,.05);
+}
+
+.logos-container { display: flex; align-items: center; gap: 1.5rem; }
+
+/* Tamaño del placeholder del hackathon en el nav */
+.ph-nav-hackathon { 
+  width: 120px; height: 60px; object-fit: contain;
+}
+
+.nav-links { display: flex; gap: 1.5rem; align-items: center; }
+.nav-links a {
+  font-size: 0.85rem; font-weight: 500; text-transform: uppercase;
+  letter-spacing: 1px; position: relative; transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--cyan); }
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -4px; left: 0;
+  width: 0%; height: 2px; background: var(--cyan); transition: 0.3s;
+}
+.nav-links a:hover::after { width: 100%; }
+
+/* Mobile Menu */
+.burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 101; }
+.burger span { width: 25px; height: 2px; background: white; transition: 0.3s; }
+.mob-menu {
+  position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
+  background: var(--navy); display: flex; flex-direction: column;
+  justify-content: center; align-items: center; gap: 2rem;
+  transition: 0.4s ease-in-out; z-index: 99;
+}
+.mob-menu.open { right: 0; }
+.mob-menu a { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: white; }
+
+@media (max-width: 1100px) {
+  .nav-links { display: none; }
+  .burger { display: flex; }
+  .ph-nav-hackathon { width: 130px; font-size: 0.8rem; }
+}
+
+/* ===================================================
+   HERO SECTION & BACKGROUND
+=================================================== */
+header {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  position: relative; padding: 120px 5% 60px; text-align: center; overflow: hidden;
+}
+
+/* Imagen de fondo del hero */
+.hero-bg-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('Fondo_Hackathon.png');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.35; /* Baja opacidad para que no compita con el texto */
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Degradado para que se mezcle con el fondo oscuro suavemente hacia abajo */
+header::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent 40%, var(--navy) 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.hero-content { max-width: 900px; position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center;}
+
+.ph-hero-logo {
+  width:400px; height: auto; max-height: 250px; border-color: var(--green);
+  color: var(--green); font-size: 1.2rem; font-weight: bold; 
+  
+}
+
+.badge-presencial {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(0,255,157,.1); border: 1px solid var(--green);
+  color: var(--green); padding: 6px 16px; border-radius: 50px;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
+  margin-bottom: 1.5rem; text-transform: uppercase; font-weight: bold;
+}
+
+.hero-title {
+  font-size: clamp(3rem, 7vw, 6rem); color: white;
+  text-shadow: 0 0 40px rgba(0,212,255,.3); margin-bottom: 1rem;
+}
+.hero-title span { color: var(--cyan); display: block; }
+
+.hero-subtitle {
+  font-size: clamp(1.1rem, 2vw, 1.3rem); color: var(--text-muted);
+  max-width: 700px; margin: 0 auto 3rem;
+}
+
+/* ===================================================
+   SECTION COMMONS
+=================================================== */
+section { padding: 80px 5%; position: relative; }
+.container { max-width: 1200px; margin: 0 auto; }
+.sec-title {
+  font-size: clamp(2.5rem, 4vw, 3.5rem); text-align: center; margin-bottom: 3.5rem; color: white;
+}
+.sec-title span { color: var(--cyan); }
+
+/* ===================================================
+   INSTRUCCIONES GENERALES
+=================================================== */
+.instrucciones-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;
+}
+.inst-card {
+  background: rgba(0,212,255,0.03); border-left: 4px solid var(--cyan);
+  padding: 1.5rem; border-radius: 0 12px 12px 0;
+}
+.inst-card h4 { font-family: 'Outfit', sans-serif; font-size: 1.2rem; color: white; margin-bottom: 0.5rem; }
+.inst-card p { font-size: 0.9rem; color: var(--text-muted); }
+
+/* ===================================================
+   FASES DEL HACKATHON
+=================================================== */
+.fases-wrapper {
+  display: flex; flex-direction: column; gap: 2rem; position: relative;
+}
+.fase-box {
+  display: flex; align-items: center; gap: 2rem; background: var(--navy-2);
+  border: 1px solid var(--navy-3); padding: 2rem; border-radius: 16px;
+}
+.fase-box:nth-child(even) { flex-direction: row-reverse; text-align: right; border-color: rgba(0,255,157,0.2); }
+.fase-box:nth-child(even) .fase-num { color: var(--green); -webkit-text-stroke: 1px var(--green); }
+
+.fase-num {
+  font-family: 'Bebas Neue', sans-serif; font-size: 5rem; color: transparent;
+  -webkit-text-stroke: 1px var(--cyan); opacity: 0.8; line-height: 1; min-width: 80px; text-align: center;
+}
+.fase-text h3 { font-size: 1.8rem; color: white; margin-bottom: 0.5rem; }
+.fase-text p { color: var(--text-muted); font-size: 1rem; }
+
+@media (max-width: 768px) {
+  .fase-box, .fase-box:nth-child(even) { flex-direction: column; text-align: center; gap: 1rem; }
+}
+
+/* ===================================================
+   MECÁNICA
+=================================================== */
+.mecanica-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;
+}
+.card {
+  background: var(--navy-2); border: 1px solid var(--navy-3);
+  padding: 2.5rem 2rem; border-radius: 16px; transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-5px); border-color: rgba(0,212,255,.3); box-shadow: var(--cyan-glow);
+}
+.card-icon {
+  width: 50px; height: 50px; background: rgba(0,212,255,.1);
+  border-radius: 12px; display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1.5rem; color: var(--cyan); font-size: 1.5rem;
+}
+.card h3 { font-size: 1.8rem; margin-bottom: 1rem; color: white; }
+.card p { color: var(--text-muted); font-size: 0.95rem; }
+
+/* ===================================================
+   SPONSORS
+=================================================== */
+.sponsors-grid {
+  display: flex; justify-content: center; flex-wrap: wrap; gap: 2rem; margin-top: 2rem;
+}
+.ph-sponsor { width: 220px; height: 100px; border-style: solid; border-color: rgba(255,255,255,0.1); }
+
+/* ===================================================
+   CRONOGRAMA (TIMELINE) - Simplificado
+=================================================== */
+.timeline { position: relative; max-width: 800px; margin: 0 auto; padding-left: 2rem; }
+.timeline::before {
+  content: ''; position: absolute; left: 0; top: 0; width: 2px; height: 100%;
+  background: linear-gradient(to bottom, var(--cyan), var(--navy-3));
+}
+.tl-item { position: relative; margin-bottom: 3rem; }
+.tl-dot {
+  position: absolute; left: -2.4rem; top: 5px; width: 16px; height: 16px;
+  background: var(--navy); border: 2px solid var(--cyan); border-radius: 50%;
+}
+.tl-date {
+  font-family: 'JetBrains Mono', monospace; color: var(--cyan); font-weight: bold;
+  font-size: 0.9rem; margin-bottom: 0.5rem; display: block; text-transform: uppercase;
+}
+.tl-content {
+  background: var(--navy-2); border: 1px solid var(--navy-3);
+  padding: 1.5rem; border-radius: 12px;
+}
+.tl-content h4 { font-size: 1.5rem; color: white; margin-bottom: 0.5rem; }
+.tl-content p { color: var(--text-muted); font-size: 0.95rem; }
+.tl-item.highlight .tl-dot { border-color: var(--green); background: var(--green); box-shadow: 0 0 10px var(--green);}
+.tl-item.highlight .tl-date { color: var(--green); }
+
+/* ===================================================
+   FOOTER & LOGOS INSTITUCIONALES
+=================================================== */
+footer {
+  background: #040c16; padding: 4rem 5% 2rem; border-top: 1px solid var(--navy-3);
+  text-align: center;
+}
+
+/* Logos Institucionales en el Footer */
+.footer-institutions {
+  display: flex; justify-content: center; align-items: center; gap: 3rem; 
+  flex-wrap: wrap; margin-bottom: 4rem; padding-bottom: 3rem;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+/* Contenedor con degradado blanco/plateado para Logo ESPE (letras negras) */
+.logo-espe-wrapper {
+  background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
+  padding: 15px 25px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease;
+}
+.logo-espe-wrapper:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
+}
+.logo-espe-wrapper img {
+  max-height: 50px; 
+  width: auto; 
+  object-fit: contain;
+}
+
+.footer-institutions img:not(.logo-espe-wrapper img) { 
+  max-height: 80px; width: auto; object-fit: contain; border-radius: 8px;
+}
+.ph-footer-hackathon { 
+  width: 200px; height: 80px; border-color: var(--green); 
+  color: var(--green); border-width: 2px; object-fit: contain; border-radius: 8px;
+}
+
+.developers-section {
+  max-width: 800px; margin: 0 auto 4rem auto; padding: 2rem;
+  background: rgba(255,255,255,0.02); border-radius: 16px; border: 1px dashed rgba(255,255,255,0.1);
+}
+.developers-section h4 { 
+  font-family: 'Outfit', sans-serif; font-size: 1.2rem; color: white; margin-bottom: 1.5rem; letter-spacing: 0;
+}
+.dev-grid {
+  display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;
+}
+.ph-dev { width: 180px; height: 60px; }
+
+.footer-copy { color: var(--text-muted); font-size: 0.9rem; margin-top: 2rem; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 2rem;}
+
+/* ===================================================
+   ANIMATIONS & UTILS
+=================================================== */
+.reveal { opacity: 0; transform: translateY(40px); transition: 0.8s ease-out; }
+.reveal.active { opacity: 1; transform: translateY(0); }
+.icon-svg { width: 24px; height: 24px; fill: currentColor; }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+<div class="bg-glow right"></div>
+
+<!-- NAVBAR -->
+<nav id="nav">
+  <div class="logos-container">
+    <img class="ph-nav-hackathon" src="Logo_Hackathon.png" alt="Logo Hackathon">
+  </div>
+
+  <div class="nav-links">
+    <a href="#inicio">Inicio</a>
+    <a href="#instrucciones">Instrucciones</a>
+    <a href="#fases">Fases</a>
+    <a href="#mecanica">Mecánica</a>
+    <a href="#cronograma">Cronograma</a>
+    <a href="#sponsors">Sponsors</a>
+  </div>
+
+  <div class="burger" id="burger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mob-menu" id="mob-menu">
+  <a href="#inicio">Inicio</a>
+  <a href="#instrucciones">Instrucciones</a>
+  <a href="#fases">Fases</a>
+  <a href="#mecanica">Mecánica</a>
+  <a href="#cronograma">Cronograma</a>
+</div>
+
+<!-- HERO -->
+<header id="inicio">
+  
+  <!-- IMAGEN DE FONDO DE PRESENTACIÓN -->
+  <div class="hero-bg-img" ></div>
+
+  <div class="hero-content reveal">
+    
+    <img src="Logo_Hackathon.png" class="ph-hero-logo" alt="Logo Principal Hackathon">
+
+    <h1 class="hero-title">
+      DEFENSE HACK <span>CHALLENGE ESPE</span>
+    </h1>
+    <p class="hero-subtitle">
+      Hackathon de ciberdefensa organizado por la ESPE. Únete al desafío de proteger infraestructuras críticas, sistemas de salud y datos sensibles en un entorno simulado de alta exigencia.
+    </p>
+  </div>
+</header>
+
+<!-- INSTRUCCIONES GENERALES -->
+<section id="instrucciones">
+  <div class="container">
+    <h2 class="sec-title reveal">INSTRUCCIONES <span>GENERALES</span></h2>
+    <div class="instrucciones-grid">
+      
+      <div class="inst-card reveal">
+        <h4>01. Formación de Equipos</h4>
+        <p>Los equipos deben ser multidisciplinarios. Se fomenta la integración de perfiles de desarrollo, ciberseguridad, diseño y análisis de datos para soluciones integrales.</p>
+      </div>
+
+      <div class="inst-card reveal">
+        <h4>02. Modalidad Presencial</h4>
+        <p>El evento es estrictamente presencial en las instalaciones de la ESPE. No se aceptarán participaciones o entregas remotas durante los 3 días de competencia.</p>
+      </div>
+
+      <div class="inst-card reveal">
+        <h4>03. Entregables Obligatorios</h4>
+        <p>Cada equipo debe presentar un prototipo funcional (código, dashboard o simulación) y un "Pitch Deck" explicativo para la evaluación del jurado.</p>
+      </div>
+
+      <div class="inst-card reveal">
+        <h4>04. Cumplimiento de Horarios</h4>
+        <p>Es obligatorio registrar la asistencia y presentar avances en los "Checkpoints" establecidos en el cronograma oficial para no ser descalificados.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FASES DEL HACKATHON -->
+<section id="fases">
+  <div class="container">
+    <h2 class="sec-title reveal">FASES DEL <span>COMPETENCIA</span></h2>
+    
+    <div class="fases-wrapper">
+      <div class="fase-box reveal">
+        <div class="fase-num">1</div>
+        <div class="fase-text">
+          <h3>Inscripción y Planteamiento</h3>
+          <p>Registro de los participantes y conformación de equipos. Presentación de los retos de seguridad, explicación de reglas y apertura oficial del acceso a los entornos simulados.</p>
+        </div>
+      </div>
+
+      <div class="fase-box reveal">
+        <div class="fase-num">2</div>
+        <div class="fase-text">
+          <h3>Desarrollo Ininterrumpido</h3>
+          <p>48 horas de trabajo enfocado. Los equipos diseñan, codifican y prueban sus soluciones tecnológicas orientadas a la defensa, detección de anomalías y visualización de datos.</p>
+        </div>
+      </div>
+
+      <div class="fase-box reveal">
+        <div class="fase-num">3</div>
+        <div class="fase-text">
+          <h3>Mentoría y Checkpoints</h3>
+          <p>Validación técnica del avance de los equipos mediante reuniones periódicas con mentores y expertos en ciberseguridad, asegurando la viabilidad del proyecto.</p>
+        </div>
+      </div>
+
+      <div class="fase-box reveal">
+        <div class="fase-num">4</div>
+        <div class="fase-text">
+          <h3>Pitch y Evaluación</h3>
+          <p>Demostración del prototipo ante el jurado calificador. Evaluación basada en funcionalidad, innovación, impacto real en ciberdefensa y claridad de la presentación.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- MECÁNICA -->
+<section id="mecanica">
+  <div class="container">
+    <h2 class="sec-title reveal">MECÁNICA DEL <span>HACKATHON</span></h2>
+    <div class="mecanica-grid">
+      
+      <div class="card reveal">
+        <div class="card-icon">
+          <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+        </div>
+        <h3>Trabajo Colaborativo</h3>
+        <p>Integración de habilidades técnicas, estratégicas y analíticas para resolver retos complejos de seguridad informática en tiempo récord.</p>
+      </div>
+
+      <div class="card reveal">
+        <div class="card-icon">
+          <svg class="icon-svg" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+        </div>
+        <h3>Entornos Simulados</h3>
+        <p>Afrontarás escenarios que simulan infraestructuras críticas reales (Salud, Logística, Ciudades Inteligentes) bajo amenaza controlada.</p>
+      </div>
+
+      <div class="card reveal">
+        <div class="card-icon">
+          <svg class="icon-svg" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+        </div>
+        <h3>Retroalimentación Continua</h3>
+        <p>Espacios dedicados para que los expertos guíen el enfoque técnico y validen que las soluciones mitigan efectivamente los riesgos.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CRONOGRAMA -->
+<section id="cronograma">
+  <div class="container">
+    <h2 class="sec-title reveal">CRONOGRAMA <span>OFICIAL</span></h2>
+    
+    <div class="timeline">
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <span class="tl-date">04 de Mayo 2026</span>
+        <div class="tl-content">
+          <h4>Lanzamiento Oficial</h4>
+          <p>Publicación de bases y apertura de la etapa informativa.</p>
+        </div>
+      </div>
+
+      <div class="tl-item highlight reveal">
+        <div class="tl-dot"></div>
+        <span class="tl-date">10 de Julio 2026</span>
+        <div class="tl-content">
+          <h4>Día 1: Inauguración y Arranque</h4>
+          <p>Registro, presentación de retos y el inicio oficial a las 19:30 h. Comienza el bloque 1 de desarrollo y mentoría.</p>
+        </div>
+      </div>
+
+      <div class="tl-item highlight reveal">
+        <div class="tl-dot"></div>
+        <span class="tl-date">11 de Julio 2026</span>
+        <div class="tl-content">
+          <h4>Día 2: Desarrollo y Checkpoints</h4>
+          <p>Jornada intensiva de programación, ejecución de puntos de control obligatorios y retroalimentación técnica con mentores.</p>
+        </div>
+      </div>
+
+      <div class="tl-item highlight reveal">
+        <div class="tl-dot"></div>
+        <span class="tl-date">12 de Julio 2026</span>
+        <div class="tl-content">
+          <h4>Día 3: Pitch y Clausura</h4>
+          <p>Cierre del desarrollo, presentación final de prototipos ante el jurado, evaluación, premiación y clausura.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SPONSORS -->
+<section id="sponsors">
+  <div class="container">
+    <h2 class="sec-title reveal">NUESTROS <span>SPONSORS</span></h2>
+    <div class="sponsors-grid reveal">
+      <div class="img-placeholder ph-sponsor">ESPACIO IMAGEN<br>SPONSOR 1</div>
+      <div class="img-placeholder ph-sponsor">ESPACIO IMAGEN<br>SPONSOR 2</div>
+      <div class="img-placeholder ph-sponsor">ESPACIO IMAGEN<br>SPONSOR 3</div>
+      <div class="img-placeholder ph-sponsor">ESPACIO IMAGEN<br>SPONSOR 4</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  
+  <!-- LOGOS INSTITUCIONALES -->
+  <div class="footer-institutions reveal">
+    <!-- Contenedor especial con fondo para el logo transparente de la ESPE -->
+    <div class="logo-espe-wrapper">
+      <img src="Logo_ESPE.png" alt="Logo ESPE">
+    </div>
+    
+    <img src="Logo_Hackathon.png" class="ph-footer-hackathon" alt="Logo Hackathon">
+    <img src="Logo_ClubOpenHub.png" alt="Logo Club OpenHub">
+  </div>
+
+  <!-- SECCIÓN DESARROLLADORES -->
+  <div class="developers-section reveal">
+    <h4>Diseñado y Desarrollado por:</h4>
+    <div class="dev-grid">
+      <div class="img-placeholder ph-dev">ESPACIO IMAGEN<br>EQUIPO DE DESARROLLO</div>
+    </div>
+  </div>
+
+  <div class="footer-copy">
+    <p>Universidad de las Fuerzas Armadas ESPE<br>Hackathon de Ciberdefensa - Todos los derechos reservados &copy; 2026</p>
+  </div>
+</footer>
+
+<script>
+// ==========================================
+// UX & UI SCRIPTS
+// ==========================================
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 30);
+});
+nav.classList.toggle('scrolled', window.scrollY > 30);
+
+const burger = document.getElementById('burger');
+const mob = document.getElementById('mob-menu');
+burger.addEventListener('click', () => {
+  burger.classList.toggle('open');
+  mob.classList.toggle('open');
+});
+mob.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => {
+    burger.classList.remove('open');
+    mob.classList.remove('open');
+  });
+});
+
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) { 
+      e.preventDefault(); 
+      window.scrollTo({ top: t.getBoundingClientRect().top + scrollY - 80, behavior: 'smooth' }); 
+    }
+  });
+});
+
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => {
+        entry.target.classList.add('active');
+      }, i * 100); 
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
