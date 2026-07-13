@@ -80,22 +80,48 @@ nav {
   position: fixed; top: 0; width: 100%; z-index: 100;
   padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center;
   transition: all 0.3s ease; border-bottom: 1px solid transparent;
+  gap: 1rem;
 }
 nav.scrolled {
   background: rgba(7, 21, 37, 0.95);
   backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,.05);
 }
 
-.logos-container { display: flex; align-items: center; gap: 1.5rem; }
+.logos-container { display: flex; align-items: center; gap: 1.5rem; flex-shrink: 0; }
 
 /* Tamaño del placeholder del hackathon en el nav */
 .ph-nav-hackathon { 
   width: 120px; height: 60px; object-fit: contain;
 }
 
-.nav-links { display: flex; gap: 1.5rem; align-items: center; }
+/* Grupo derecho del navbar: logo ESPE + botón de inscripción + burger */
+.nav-right { display: flex; align-items: center; gap: 1.25rem; flex-shrink: 0; }
+
+.ph-nav-espe {
+  width: 42px; height: 42px; object-fit: contain;
+  background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
+  border-radius: 10px; padding: 5px;
+}
+
+/* Botón de inscripción en el navbar, junto al logo */
+.btn-inscripcion-nav {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--cyan); color: var(--navy);
+  padding: 10px 22px; border-radius: 50px;
+  font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.9rem;
+  letter-spacing: 0.5px; text-transform: uppercase;
+  box-shadow: var(--cyan-glow);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  white-space: nowrap;
+}
+.btn-inscripcion-nav:hover {
+  background: var(--green); box-shadow: var(--green-glow);
+  transform: translateY(-2px);
+}
+
+.nav-links { display: flex; gap: 1.2rem; align-items: center; flex-shrink: 1; overflow: hidden; white-space: nowrap; min-width: 0; }
 .nav-links a {
-  font-size: 0.85rem; font-weight: 500; text-transform: uppercase;
+  font-size: 0.82rem; font-weight: 500; text-transform: uppercase;
   letter-spacing: 1px; position: relative; transition: color 0.3s;
 }
 .nav-links a:hover { color: var(--cyan); }
@@ -116,11 +142,14 @@ nav.scrolled {
 }
 .mob-menu.open { right: 0; }
 .mob-menu a { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: white; }
+.mob-menu .btn-inscripcion-nav { font-family: 'Outfit', sans-serif; font-size: 1rem; }
 
-@media (max-width: 1100px) {
+@media (max-width: 1250px) {
   .nav-links { display: none; }
   .burger { display: flex; }
   .ph-nav-hackathon { width: 130px; font-size: 0.8rem; }
+  .btn-inscripcion-nav span.long-label { display: none; }
+  .nav-right { gap: 0.75rem; }
 }
 
 /* ===================================================
@@ -183,8 +212,101 @@ header::after {
 
 .hero-subtitle {
   font-size: clamp(1.1rem, 2vw, 1.3rem); color: var(--text-muted);
-  max-width: 700px; margin: 0 auto 3rem;
+  max-width: 700px; margin: 0 auto 2rem;
 }
+
+/* Botón principal de inscripción en el Hero */
+.hero-cta-group {
+  display: flex; flex-direction: column; align-items: center; gap: 1rem;
+  margin-bottom: 1rem;
+}
+.btn-inscripcion-hero {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--cyan); color: var(--navy);
+  padding: 18px 42px; border-radius: 50px;
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 1px;
+  box-shadow: var(--cyan-glow);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+.btn-inscripcion-hero:hover {
+  background: var(--green); box-shadow: var(--green-glow);
+  transform: translateY(-3px);
+}
+
+.hero-note {
+  display: inline-flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  justify-content: center;
+  background: rgba(255,255,255,0.03); border: 1px dashed rgba(0,212,255,.4);
+  padding: 10px 20px; border-radius: 12px;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
+  color: var(--text-muted); max-width: 600px;
+}
+.hero-note strong { color: var(--cyan); }
+.hero-note a {
+  color: var(--green); font-weight: bold; text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.hero-note a:hover { color: white; }
+
+/* ===================================================
+   SECCIÓN DE INSCRIPCIÓN
+=================================================== */
+.inscripcion-banner {
+  max-width: 1100px; margin: 0 auto;
+  background: linear-gradient(120deg, rgba(0,212,255,0.07), rgba(0,255,157,0.04));
+  border: 1px solid rgba(0,212,255,.25); border-radius: 24px;
+  padding: 2.75rem 3rem; position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: space-between; gap: 2.5rem;
+}
+.inscripcion-banner::before {
+  content: ''; position: absolute; top: -60%; left: -10%; width: 45%; height: 220%;
+  background: radial-gradient(circle, rgba(0,212,255,.14) 0%, transparent 70%);
+  pointer-events: none;
+}
+.insc-left { position: relative; flex: 1; min-width: 0; text-align: left; }
+.insc-left h3 {
+  font-size: clamp(1.8rem, 3.2vw, 2.6rem); color: white; line-height: 1.05;
+}
+.insc-left h3 span { color: var(--green); }
+.inscripcion-doc-note {
+  display: flex; align-items: center; gap: 12px; text-align: left;
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(0,255,157,.25);
+  padding: 12px 18px; border-radius: 12px; margin-top: 1.25rem; max-width: 460px;
+  position: relative;
+}
+.inscripcion-doc-note .doc-icon {
+  width: 34px; height: 34px; flex-shrink: 0; border-radius: 9px;
+  background: rgba(0,255,157,.12); display: flex; align-items: center; justify-content: center;
+  color: var(--green); font-size: 1rem;
+}
+.inscripcion-doc-note p { color: var(--text-muted); font-size: 0.8rem; margin: 0; }
+.inscripcion-doc-note strong { color: white; }
+.inscripcion-doc-note a {
+  display: inline-block; margin-top: 4px; color: var(--green); font-weight: bold;
+  text-decoration: underline; text-underline-offset: 3px; font-size: 0.8rem;
+}
+.inscripcion-doc-note a:hover { color: white; }
+
+.insc-right { position: relative; flex-shrink: 0; }
+.btn-inscripcion-main {
+  display: inline-flex; align-items: center; gap: 10px; white-space: nowrap;
+  background: var(--cyan); color: var(--navy);
+  padding: 20px 44px; border-radius: 50px;
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 1px;
+  box-shadow: var(--cyan-glow);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+.btn-inscripcion-main:hover {
+  background: var(--green); box-shadow: var(--green-glow); transform: translateY(-3px);
+}
+
+@media (max-width: 800px) {
+  .inscripcion-banner { flex-direction: column; text-align: center; padding: 2.25rem 1.75rem; }
+  .insc-left { text-align: center; }
+  .inscripcion-doc-note { margin-left: auto; margin-right: auto; text-align: left; }
+}
+
+#inscripcion { padding: 50px 5%; }
 
 /* ===================================================
    SECTION COMMONS
@@ -255,22 +377,37 @@ section { padding: 80px 5%; position: relative; }
 .card p { color: var(--text-muted); font-size: 0.95rem; }
 
 /* ===================================================
-   SPONSORS
+   SPONSORS / ALIADOS
 =================================================== */
+#sponsors { padding-top: 40px; }
 .sponsors-grid {
   display: flex; justify-content: center; flex-wrap: wrap; gap: 2rem; margin-top: 2rem;
 }
-.ph-sponsor { width: 220px; height: 100px; border-style: solid; border-color: rgba(255,255,255,0.1); }
+.sponsor-card {
+  background: var(--navy-2); border: 1px solid var(--navy-3);
+  border-radius: 16px; padding: 1.75rem 2.5rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+}
+.sponsor-card:hover {
+  transform: translateY(-5px); border-color: rgba(0,212,255,.3); box-shadow: var(--cyan-glow);
+}
+.ph-sponsor {
+  width: 160px; height: 70px; object-fit: contain;
+  border-radius: 8px;
+}
 
 /* ===================================================
    CRONOGRAMA (TIMELINE) - Simplificado
 =================================================== */
+#cronograma { padding-bottom: 40px; }
 .timeline { position: relative; max-width: 800px; margin: 0 auto; padding-left: 2rem; }
 .timeline::before {
   content: ''; position: absolute; left: 0; top: 0; width: 2px; height: 100%;
   background: linear-gradient(to bottom, var(--cyan), var(--navy-3));
 }
-.tl-item { position: relative; margin-bottom: 3rem; }
+.tl-item { position: relative; margin-bottom: 2rem; }
+.tl-item:last-child { margin-bottom: 0; }
 .tl-dot {
   position: absolute; left: -2.4rem; top: 5px; width: 16px; height: 16px;
   background: var(--navy); border: 2px solid var(--cyan); border-radius: 50%;
@@ -288,6 +425,20 @@ section { padding: 80px 5%; position: relative; }
 .tl-item.highlight .tl-dot { border-color: var(--green); background: var(--green); box-shadow: 0 0 10px var(--green);}
 .tl-item.highlight .tl-date { color: var(--green); }
 
+/* Lista de actividades día a día dentro de cada tarjeta del cronograma */
+.day-schedule { list-style: none; margin-top: 0.75rem; }
+.day-schedule li {
+  display: flex; align-items: baseline; gap: 14px;
+  padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.day-schedule li:last-child { border-bottom: none; }
+.day-schedule .time {
+  font-family: 'JetBrains Mono', monospace; color: var(--green);
+  font-size: 0.85rem; font-weight: bold; min-width: 92px; flex-shrink: 0;
+}
+.day-schedule .activity { color: var(--text-main); font-size: 0.95rem; }
+.tl-item.highlight .day-schedule .time { color: var(--green); }
+
 /* ===================================================
    FOOTER & LOGOS INSTITUCIONALES
 =================================================== */
@@ -299,7 +450,7 @@ footer {
 /* Logos Institucionales en el Footer */
 .footer-institutions {
   display: flex; justify-content: center; align-items: center; gap: 3rem; 
-  flex-wrap: wrap; margin-bottom: 4rem; padding-bottom: 3rem;
+  flex-wrap: wrap; padding-bottom: 3rem;
   border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
@@ -332,19 +483,26 @@ footer {
   color: var(--green); border-width: 2px; object-fit: contain; border-radius: 8px;
 }
 
-.developers-section {
-  max-width: 800px; margin: 0 auto 4rem auto; padding: 2rem;
-  background: rgba(255,255,255,0.02); border-radius: 16px; border: 1px dashed rgba(255,255,255,0.1);
+.footer-columns {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+  max-width: 900px; margin: 0 auto; padding-top: 2rem;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  text-align: left;
 }
-.developers-section h4 { 
-  font-family: 'Outfit', sans-serif; font-size: 1.2rem; color: white; margin-bottom: 1.5rem; letter-spacing: 0;
+.footer-col h4 {
+  font-family: 'Outfit', sans-serif; font-size: 0.75rem; color: var(--text-muted);
+  margin-bottom: 0.6rem; letter-spacing: 0.5px; font-weight: 400; opacity: 0.7;
+  text-transform: uppercase;
 }
-.dev-grid {
-  display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;
-}
-.ph-dev { width: 180px; height: 60px; }
+.footer-col p { color: var(--text-muted); font-size: 0.85rem; line-height: 1.7; margin: 0; }
+.footer-col.right { text-align: right; }
 
-.footer-copy { color: var(--text-muted); font-size: 0.9rem; margin-top: 2rem; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 2rem;}
+@media (max-width: 600px) {
+  .footer-columns { grid-template-columns: 1fr; text-align: center; }
+  .footer-col.right { text-align: center; }
+}
+
+
 
 /* ===================================================
    ANIMATIONS & UTILS
@@ -371,12 +529,19 @@ footer {
     <a href="#instrucciones">Instrucciones</a>
     <a href="#fases">Fases</a>
     <a href="#mecanica">Mecánica</a>
+    <a href="#inscripcion">Inscripción</a>
     <a href="#cronograma">Cronograma</a>
-    <a href="#sponsors">Sponsors</a>
+    <a href="#sponsors">Aliados</a>
   </div>
 
-  <div class="burger" id="burger">
-    <span></span><span></span><span></span>
+  <div class="nav-right">
+    <img class="ph-nav-espe" src="Logo_ESPE2.png" alt="Logo ESPE">
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSc0TqaAcPY1ib2VGJAzqL5fJ3yWcwm42sS-F6JQEDcWLLJ-4w/viewform" target="_blank" rel="noopener" class="btn-inscripcion-nav">
+      <span class="long-label">Inscríbete</span><span class="short-label">🡒</span>
+    </a>
+    <div class="burger" id="burger">
+      <span></span><span></span><span></span>
+    </div>
   </div>
 </nav>
 
@@ -386,7 +551,9 @@ footer {
   <a href="#instrucciones">Instrucciones</a>
   <a href="#fases">Fases</a>
   <a href="#mecanica">Mecánica</a>
+  <a href="#inscripcion">Inscripción</a>
   <a href="#cronograma">Cronograma</a>
+  <a href="https://docs.google.com/forms/d/e/1FAIpQLSc0TqaAcPY1ib2VGJAzqL5fJ3yWcwm42sS-F6JQEDcWLLJ-4w/viewform" target="_blank" rel="noopener" class="btn-inscripcion-nav">Inscríbete</a>
 </div>
 
 <!-- HERO -->
@@ -405,6 +572,12 @@ footer {
     <p class="hero-subtitle">
       Hackathon de ciberdefensa organizado por la ESPE. Únete al desafío de proteger infraestructuras críticas, sistemas de salud y datos sensibles en un entorno simulado de alta exigencia.
     </p>
+
+    <div class="hero-cta-group">
+      <a href="#inscripcion" class="btn-inscripcion-hero">
+        INSCRÍBETE AQUÍ
+      </a>
+    </div>
   </div>
 </header>
 
@@ -434,6 +607,29 @@ footer {
         <p>Es obligatorio registrar la asistencia y presentar avances en los "Checkpoints" establecidos en el cronograma oficial para no ser descalificados.</p>
       </div>
 
+    </div>
+  </div>
+</section>
+
+<!-- INSCRIPCIÓN -->
+<section id="inscripcion">
+  <div class="container">
+    <div class="inscripcion-banner reveal">
+      <div class="insc-left">
+        <h3>¡INSCRÍBETE <span>YA</span>!</h3>
+        <div class="inscripcion-doc-note">
+          <div class="doc-icon">📎</div>
+          <div>
+            <p><strong>No te olvides:</strong> debes traer un documento llenado (Acta de Compromiso del Participante) el día del evento para el check-in.</p>
+            <a href="ACT_COMPROMISO_DE_PARTICIPACIÓN_HACKATHON.docx" download>Descargar Word</a>
+          </div>
+        </div>
+      </div>
+      <div class="insc-right">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSc0TqaAcPY1ib2VGJAzqL5fJ3yWcwm42sS-F6JQEDcWLLJ-4w/viewform" target="_blank" rel="noopener" class="btn-inscripcion-main">
+          INSCRÍBETE AQUÍ 🡒
+        </a>
+      </div>
     </div>
   </div>
 </section>
@@ -520,54 +716,68 @@ footer {
     <h2 class="sec-title reveal">CRONOGRAMA <span>OFICIAL</span></h2>
     
     <div class="timeline">
-      <div class="tl-item reveal">
-        <div class="tl-dot"></div>
-        <span class="tl-date">04 de Mayo 2026</span>
-        <div class="tl-content">
-          <h4>Lanzamiento Oficial</h4>
-          <p>Publicación de bases y apertura de la etapa informativa.</p>
-        </div>
-      </div>
-
       <div class="tl-item highlight reveal">
         <div class="tl-dot"></div>
-        <span class="tl-date">10 de Julio 2026</span>
+        <span class="tl-date">Viernes 28 de Agosto 2026</span>
         <div class="tl-content">
           <h4>Día 1: Inauguración y Arranque</h4>
-          <p>Registro, presentación de retos y el inicio oficial a las 19:30 h. Comienza el bloque 1 de desarrollo y mentoría.</p>
+          <ul class="day-schedule">
+            <li><span class="time">16h00</span><span class="activity">Registro de participantes</span></li>
+            <li><span class="time">17h00</span><span class="activity">Acto inaugural y bienvenida institucional</span></li>
+            <li><span class="time">18h00</span><span class="activity">Meet con Cursor</span></li>
+            <li><span class="time">19h00</span><span class="activity">Inicio oficial del hackathon. Presentación de retos, reglas, entregables y criterios de evaluación y organización de equipos de trabajo</span></li>
+            <li><span class="time">20h00</span><span class="activity">Bloque 1 de desarrollo y mentoría abierta</span></li>
+            <li><span class="time">21h00 en adelante</span><span class="activity">Control de seguridad nocturno y permanencia en sede</span></li>
+          </ul>
         </div>
       </div>
 
       <div class="tl-item highlight reveal">
         <div class="tl-dot"></div>
-        <span class="tl-date">11 de Julio 2026</span>
+        <span class="tl-date">Sábado 29 de Agosto 2026</span>
         <div class="tl-content">
           <h4>Día 2: Desarrollo y Checkpoints</h4>
-          <p>Jornada intensiva de programación, ejecución de puntos de control obligatorios y retroalimentación técnica con mentores.</p>
+          <ul class="day-schedule">
+            <li><span class="time">07h00</span><span class="activity">Desayuno / activación logística de jornada</span></li>
+            <li><span class="time">08h00</span><span class="activity">Bloque 2 de desarrollo</span></li>
+            <li><span class="time">10h30</span><span class="activity">Checkpoint 1 y retroalimentación por equipos</span></li>
+            <li><span class="time">12h30</span><span class="activity">Almuerzo</span></li>
+            <li><span class="time">13h30</span><span class="activity">Bloque 3 de desarrollo intensivo</span></li>
+            <li><span class="time">18h30</span><span class="activity">Checkpoint 2 y ajuste de alcance</span></li>
+            <li><span class="time">19h00</span><span class="activity">Merienda / pausa operativa</span></li>
+            <li><span class="time">20h00</span><span class="activity">Bloque 4 de desarrollo, pruebas y preparación de pitch</span></li>
+            <li><span class="time">21h00 en adelante</span><span class="activity">Control de seguridad nocturno y permanencia en sede</span></li>
+          </ul>
         </div>
       </div>
 
       <div class="tl-item highlight reveal">
         <div class="tl-dot"></div>
-        <span class="tl-date">12 de Julio 2026</span>
+        <span class="tl-date">Domingo 30 de Agosto 2026</span>
         <div class="tl-content">
           <h4>Día 3: Pitch y Clausura</h4>
-          <p>Cierre del desarrollo, presentación final de prototipos ante el jurado, evaluación, premiación y clausura.</p>
+          <ul class="day-schedule">
+            <li><span class="time">07h00</span><span class="activity">Desayuno</span></li>
+            <li><span class="time">08h00</span><span class="activity">Ajustes finales de prototipos y materiales de presentación</span></li>
+            <li><span class="time">08h30</span><span class="activity">Cierre técnico y recepción de entregables</span></li>
+            <li><span class="time">09h00 a 12h00</span><span class="activity">Pitch y demostraciones finales ante jurado</span></li>
+            <li><span class="time">12h00</span><span class="activity">Deliberación del jurado</span></li>
+            <li><span class="time">12h30</span><span class="activity">Premiación y clausura institucional</span></li>
+            <li><span class="time">13h00 a 15h00</span><span class="activity">Desmontaje logístico y retiro de stands corporativos</span></li>
+          </ul>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- SPONSORS -->
+<!-- ALIADOS / SPONSORS -->
 <section id="sponsors">
   <div class="container">
-    <h2 class="sec-title reveal">NUESTROS <span>SPONSORS</span></h2>
+    <h2 class="sec-title reveal">NUESTROS <span>ALIADOS</span></h2>
     <div class="sponsors-grid reveal">
-      <div class="img-placeholder ph-sponsor">ESPACIO IMAGEN<br>SPONSOR 1</div>
-      <div class="img-placeholder ph-sponsor">ESPACIO IMAGEN<br>SPONSOR 2</div>
-      <div class="img-placeholder ph-sponsor">ESPACIO IMAGEN<br>SPONSOR 3</div>
-      <div class="img-placeholder ph-sponsor">ESPACIO IMAGEN<br>SPONSOR 4</div>
+      <div class="sponsor-card"><img class="ph-sponsor" src="Huawei.jpg" alt="Logo Huawei"></div>
+      <div class="sponsor-card"><img class="ph-sponsor" src="GDG.jpg" alt="Logo GDG"></div>
     </div>
   </div>
 </section>
@@ -586,16 +796,16 @@ footer {
     <img src="Logo_ClubOpenHub.png" alt="Logo Club OpenHub">
   </div>
 
-  <!-- SECCIÓN DESARROLLADORES -->
-  <div class="developers-section reveal">
-    <h4>Diseñado y Desarrollado por:</h4>
-    <div class="dev-grid">
-      <div class="img-placeholder ph-dev">ESPACIO IMAGEN<br>EQUIPO DE DESARROLLO</div>
+  <!-- FOOTER EN DOS COLUMNAS -->
+  <div class="footer-columns reveal">
+    <div class="footer-col left">
+      <h4>Diseñado y Desarrollado por:</h4>
+      <p>Erick Obando<br>Bryan Quispe</p>
     </div>
-  </div>
-
-  <div class="footer-copy">
-    <p>Universidad de las Fuerzas Armadas ESPE<br>Hackathon de Ciberdefensa - Todos los derechos reservados &copy; 2026</p>
+    <div class="footer-col right">
+      <h4>Universidad de las Fuerzas Armadas ESPE</h4>
+      <p>Hackathon de Ciberdefensa<br>Todos los derechos reservados &copy; 2026</p>
+    </div>
   </div>
 </footer>
 
