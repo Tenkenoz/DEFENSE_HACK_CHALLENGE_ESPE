@@ -103,6 +103,14 @@ nav.scrolled {
   border-radius: 10px; padding: 5px;
 }
 
+/* Segundo logo institucional del navbar, junto al de la ESPE */
+.nav-badges { display: flex; align-items: center; gap: 0.6rem; flex-shrink: 0; }
+.ph-nav-badge-2 {
+  width: 42px; height: 42px; object-fit: contain;
+  background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
+  border-radius: 10px; padding: 5px;
+}
+
 /* Botón de inscripción en el navbar, junto al logo */
 .btn-inscripcion-nav {
   display: inline-flex; align-items: center; gap: 8px;
@@ -190,11 +198,32 @@ header::after {
 
 .hero-content { max-width: 900px; position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center;}
 
-.ph-hero-logo {
-  width:400px; height: auto; max-height: 250px; border-color: var(--green);
-  color: var(--green); font-size: 1.2rem; font-weight: bold; 
-  
+/* Fila superior de logos institucionales del Hero: ESPE + Hackathon lado a lado */
+.hero-logos-row {
+  display: flex; align-items: flex-start; justify-content: center;
+  gap: 1.50rem; flex-wrap: nowrap; margin-bottom: 1.75rem;
 }
+.hero-logo-espe {
+  background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
+  border-radius: 18px; padding: 14px 28px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 8px 30px rgba(0,0,0,.35);
+}
+.hero-logo-espe img { max-height: 80px; width: auto; object-fit: contain; }
+
+.ph-hero-logo {
+  width: auto; max-height: 120px; object-fit: contain; border-color: var(--green);
+  color: var(--green); font-size: 1.2rem; font-weight: bold; 
+}
+
+/* Etiqueta de texto que acompaña a los logos, en la misma línea */
+.hero-logo-label {
+  background: rgba(0,212,255,.1); border: 1px solid var(--cyan);
+  border-radius: 14px; padding: 14px 26px; box-shadow: var(--cyan-glow);
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 1px;
+  color: white; display: flex; align-items: center; text-align: left; line-height: 1.15;
+}
+.hero-logo-label span { color: var(--cyan); display: block; }
 
 .badge-presencial {
   display: inline-flex; align-items: center; gap: 8px;
@@ -205,8 +234,9 @@ header::after {
 }
 
 .hero-title {
-  font-size: clamp(3rem, 7vw, 6rem); color: white;
+  font-size: clamp(4rem, 9vw, 1rem); color: white;
   text-shadow: 0 0 40px rgba(0,212,255,.3); margin-bottom: 1rem;
+  text-align: center;
 }
 .hero-title span { color: var(--cyan); display: block; }
 
@@ -269,23 +299,26 @@ header::after {
 }
 .insc-left h3 span { color: var(--green); }
 .inscripcion-doc-note {
-  display: flex; align-items: center; gap: 12px; text-align: left;
-  background: rgba(255,255,255,0.03); border: 1px solid rgba(0,255,157,.25);
-  padding: 12px 18px; border-radius: 12px; margin-top: 1.25rem; max-width: 460px;
+  display: flex; align-items: center; gap: 18px; text-align: left;
+  background: rgba(0,255,157,0.07); border: 2px solid var(--green);
+  box-shadow: var(--green-glow);
+  padding: 20px 26px; border-radius: 16px; margin-top: 1.5rem; max-width: 560px;
   position: relative;
 }
 .inscripcion-doc-note .doc-icon {
-  width: 34px; height: 34px; flex-shrink: 0; border-radius: 9px;
-  background: rgba(0,255,157,.12); display: flex; align-items: center; justify-content: center;
-  color: var(--green); font-size: 1rem;
+  width: 48px; height: 48px; flex-shrink: 0; border-radius: 12px;
+  background: rgba(0,255,157,.18); display: flex; align-items: center; justify-content: center;
+  color: var(--green); font-size: 1.5rem;
 }
-.inscripcion-doc-note p { color: var(--text-muted); font-size: 0.8rem; margin: 0; }
-.inscripcion-doc-note strong { color: white; }
+.inscripcion-doc-note p { color: var(--text-main); font-size: 0.98rem; margin: 0; }
+.inscripcion-doc-note strong { color: var(--green); text-transform: uppercase; letter-spacing: 0.5px; }
 .inscripcion-doc-note a {
-  display: inline-block; margin-top: 4px; color: var(--green); font-weight: bold;
-  text-decoration: underline; text-underline-offset: 3px; font-size: 0.8rem;
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 10px;
+  background: var(--green); color: var(--navy); font-weight: 700;
+  padding: 8px 16px; border-radius: 50px; text-decoration: none; font-size: 0.85rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
-.inscripcion-doc-note a:hover { color: white; }
+.inscripcion-doc-note a:hover { box-shadow: var(--green-glow); transform: translateY(-2px); }
 
 .insc-right { position: relative; flex-shrink: 0; }
 .btn-inscripcion-main {
@@ -449,39 +482,66 @@ footer {
 
 /* Logos Institucionales en el Footer */
 .footer-institutions {
-  display: flex; justify-content: center; align-items: center; gap: 3rem; 
+  display: flex; justify-content: center; align-items: flex-start; gap: 3rem; 
   flex-wrap: wrap; padding-bottom: 3rem;
   border-bottom: 1px solid rgba(255,255,255,0.05);
 }
+.footer-logo {
+  display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
+  max-width: 200px;
+  flex: 0 1 auto;
+}
+.footer-logo.club-logo {
+  flex-basis: 100%;
+}
+.footer-logo figcaption {
+  font-size: 0.72rem; color: var(--text-muted); line-height: 1.4;
+}
 
-/* Contenedor con degradado blanco/plateado para Logo ESPE (letras negras) */
+/* Contenedor para Logo ESPE sin fondo */
 .logo-espe-wrapper {
-  background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
-  padding: 15px 25px;
-  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
-  transition: transform 0.3s ease;
-}
-.logo-espe-wrapper:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
 }
 .logo-espe-wrapper img {
-  max-height: 50px; 
+  max-height: 70px; 
   width: auto; 
   object-fit: contain;
 }
 
 .footer-institutions img:not(.logo-espe-wrapper img) { 
-  max-height: 80px; width: auto; object-fit: contain; border-radius: 8px;
+  max-height: 70px; width: auto; object-fit: contain; border-radius: 8px;
 }
 .ph-footer-hackathon { 
-  width: 200px; height: 80px; border-color: var(--green); 
+  max-height: 70px; width: auto; border-color: var(--green); 
   color: var(--green); border-width: 2px; object-fit: contain; border-radius: 8px;
 }
+
+/* Contacto del Club de Software en el Footer */
+.footer-contact {
+  display: flex; flex-direction: column; align-items: center; gap: 1rem;
+  margin-bottom: 3rem;
+}
+.footer-contact h4 {
+  font-family: 'Outfit', sans-serif; font-size: 0.75rem; color: var(--text-muted);
+  letter-spacing: 0.5px; font-weight: 400; opacity: 0.7; text-transform: uppercase;
+}
+.footer-contact-links {
+  display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+}
+.footer-contact-links a {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(0,212,255,0.04); border: 1px solid rgba(0,212,255,.2);
+  padding: 10px 18px; border-radius: 50px;
+  font-size: 0.85rem; color: var(--text-main);
+  transition: border-color 0.3s, color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+.footer-contact-links a:hover {
+  border-color: var(--cyan); color: var(--cyan); box-shadow: var(--cyan-glow);
+  transform: translateY(-2px);
+}
+.footer-contact-links svg { width: 16px; height: 16px; fill: currentColor; flex-shrink: 0; }
 
 .footer-columns {
   display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
@@ -536,7 +596,12 @@ footer {
   </div>
 
   <div class="nav-right">
-    <img class="ph-nav-espe" src="Logo_ESPE2.png" alt="Logo ESPE">
+    <div class="nav-badges">
+      <!-- CAPTION: Logo ESPE (insignia pequeña para el navbar) -->
+      <img class="ph-nav-espe" src="Logo_ESPE2.png" alt="Logo ESPE">
+      <!-- CAPTION: Segunda insignia institucional del navbar (reemplaza "Logo_Institucional_2.png" por el archivo real que quieras mostrar aquí) -->
+      <img class="ph-nav-badge-2" src="logovinculacion.jpeg" alt="Logo institucional adicional">
+    </div>
     <a href="https://docs.google.com/forms/d/e/1FAIpQLSc0TqaAcPY1ib2VGJAzqL5fJ3yWcwm42sS-F6JQEDcWLLJ-4w/viewform" target="_blank" rel="noopener" class="btn-inscripcion-nav">
       <span class="long-label">Inscríbete</span><span class="short-label">🡒</span>
     </a>
@@ -564,12 +629,20 @@ footer {
   <div class="hero-bg-img" ></div>
 
   <div class="hero-content reveal">
-    
-    <img src="Logo_hackathon.png" class="ph-hero-logo" alt="Logo Principal Hackathon">
 
-    <h1 class="hero-title">
+    <!-- Fila superior: Logo ESPE (grande, sobre tarjeta blanca) + Logo del Hackathon, lado a lado -->
+    <div class="hero-logos-row">
+      <div class="hero-logo-espe">
+        <!-- CAPTION: Logo institucional ESPE (Universidad de las Fuerzas Armadas) - imagen "logos_pages-to-jpg-0003.jpg" -->
+        <img src="Logo_ESPE.png" alt="Logo ESPE - Universidad de las Fuerzas Armadas">
+      </div>
+      <!-- CAPTION: Logo principal del Defense Hack Challenge ESPE -->
+      <img src="Logo_hackathon2.png" class="ph-hero-logo" alt="Logo Principal Hackathon">
+       <h1 class="hero-title">
       DEFENSE HACK <span>CHALLENGE ESPE</span>
     </h1>
+    </div>
+
     <p class="hero-subtitle">
       Hackathon de ciberdefensa organizado por la ESPE. Únete al desafío de proteger infraestructuras críticas, sistemas de salud y datos sensibles en un entorno simulado de alta exigencia.
     </p>
@@ -788,13 +861,54 @@ footer {
   
   <!-- LOGOS INSTITUCIONALES -->
   <div class="footer-institutions reveal">
-    <!-- Contenedor especial con fondo para el logo transparente de la ESPE -->
-    <div class="logo-espe-wrapper">
-      <img src="Logo_ESPE.png" alt="Logo ESPE">
+
+    <!-- CAPTION: Logo ESPE (Universidad de las Fuerzas Armadas) - imagen "logos_pages-to-jpg-0003.jpg" -->
+    <figure class="footer-logo">
+      <div class="logo-espe-wrapper">
+        <img src="logos_pages-to-jpg-0003.jpg" alt="Logo ESPE">
+      </div>
+      <figcaption>Universidad de las Fuerzas Armadas ESPE</figcaption>
+    </figure>
+
+    <!-- CAPTION: Logo Vicerrectorado de Investigación, Innovación y Transferencia de Tecnología - imagen "logos_pages-to-jpg-0002.jpg" -->
+    <figure class="footer-logo">
+      <img src="Logo_Vicerrectorado_Investigacion.jpg" alt="Logo Vicerrectorado de Investigación, Innovación y Transferencia de Tecnología">
+      <figcaption>Vicerrectorado de Investigación, Innovación y Transferencia de Tecnología</figcaption>
+    </figure>
+
+    <!-- CAPTION: Logo Vinculación ESPE - imagen "logos_pages-to-jpg-0001.jpg" -->
+    <figure class="footer-logo">
+      <img src="Logo_Vinculacion_ESPE.jpg" alt="Logo Vinculación ESPE">
+      <figcaption>Vinculación ESPE</figcaption>
+    </figure>
+
+    <!-- CAPTION: Logo del Defense Hack Challenge ESPE -->
+    <figure class="footer-logo">
+      <img class="ph-footer-hackathon" src="Logo_hackathon2.png" alt="Logo Hackathon">
+      <figcaption>Defense Hack Challenge ESPE</figcaption>
+    </figure>
+
+    <!-- CAPTION: Logo Club OpenHub / Club de Desarrollo de Software -->
+    <figure class="footer-logo club-logo">
+      <img src="Logo_ClubOpenHub.png" alt="Logo Club OpenHub">
+      <figcaption>Club de Desarrollo de Software ESPE</figcaption>
+    </figure>
+
+  </div>
+
+  <!-- CONTACTO DEL CLUB DE SOFTWARE -->
+  <div class="footer-contact reveal">
+    <h4>Redes sociales del Club de desarrollo de Software ESPE</h4>
+    <div class="footer-contact-links">
+      <a href="https://www.tiktok.com/@clubsoftwareespe" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M16.6 5.82a4.28 4.28 0 0 1-3.09-1.32V15.5a5.32 5.32 0 1 1-4.53-5.26v2.36a2.98 2.98 0 1 0 2.1 2.85V2h2.32a4.28 4.28 0 0 0 3.2 4.14z"/></svg>
+        TikTok
+      </a>
+      <a href="https://www.instagram.com/openhub.club/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.58.01 4.85.07 1.17.05 1.8.24 2.22.4.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.35 1.05.4 2.22.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.24 1.8-.4 2.22-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.05.35-2.22.4-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.24-2.22-.4a3.72 3.72 0 0 1-1.38-.9 3.72 3.72 0 0 1-.9-1.38c-.16-.42-.35-1.05-.4-2.22-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.24-1.8.4-2.22.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.05-.35 2.22-.4C8.42 2.21 8.8 2.2 12 2.2zm0 3.05a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5zm0 11.13a4.38 4.38 0 1 1 0-8.76 4.38 4.38 0 0 1 0 8.76zm7.02-11.4a1.58 1.58 0 1 1-3.16 0 1.58 1.58 0 0 1 3.16 0z"/></svg>
+        Instagram
+      </a>
     </div>
-    
-    <img src="Logo_hackathon.png" class="ph-footer-hackathon" alt="Logo Hackathon">
-    <img src="Logo_ClubOpenHub.png" alt="Logo Club OpenHub">
   </div>
 
   <!-- FOOTER EN DOS COLUMNAS -->
